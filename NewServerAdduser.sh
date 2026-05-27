@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Copyright (c) 2026 你的名字
+# Licensed under the MIT License
+
+
+
 # Add new users to the system
 
 # Check if the script is run as root
