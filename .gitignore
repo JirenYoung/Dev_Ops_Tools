@@ -1,2 +1,5 @@
 # CodeWhale local config
 .codewhale/
+
+# CodeWhale TUI binary
+codewhale-tui-windows-x64.exe
