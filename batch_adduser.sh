@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Copyright (c) 2026 你的名字
-# Licensed under the MIT License
+# Filename: batch_adduser.sh
+# Author: JirenYoung
+# Date: 2026
+# Copyright (c) 2026 JirenYoung. All rights reserved.
+# Licensed under the MIT License.
 
 
 
