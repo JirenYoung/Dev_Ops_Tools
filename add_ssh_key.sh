@@ -198,10 +198,8 @@ elif [ -n "$KEY_FILE" ]; then
   fi
 else
   # Interactive mode
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo "  SSH Key Installer"
+  echo "── SSH Key Installer"
   echo "  Target user: $TARGET  →  $AUTH_FILE"
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo
 
   read -p "Paste the SSH public key: " SSH_KEY

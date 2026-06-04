@@ -142,7 +142,7 @@ create_user() {
 
   # --- Set password (interactive only) ---
   if [ -z "$BATCH_FILE" ]; then
-    echo "────────────────────────────────────────────"
+    echo "── Password setup"
     log_info "Setting password for '$username'..."
     if set_password "$username"; then
       log_info "Password set for '$username'."
@@ -245,10 +245,8 @@ if [ -n "$BATCH_FILE" ]; then
   log_info "Loaded ${#USERNAMES[@]} username(s) from file."
 else
   # --- Interactive mode ---
-  echo "============================================================"
-  echo "  Batch Add User — Interactive Mode"
+  echo "── Batch Add User — Interactive Mode"
   echo "  Type 'exit' at the username prompt to finish."
-  echo "============================================================"
   echo
 
   while true; do
@@ -275,7 +273,7 @@ declare -a FAILED=()
 # Batch add users and log successful / failed results
 for username in "${USERNAMES[@]}"; do
   echo
-  echo "━━━ Processing: $username ━━━"
+  echo "── Processing: $username"
   if create_user "$username"; then
     SUCCESS+=("$username")
     echo "✅ $username — complete."
@@ -289,9 +287,7 @@ done
 # Summary
 #===============================================================================
 echo
-echo "============================================================"
-echo "  Summary"
-echo "============================================================"
+echo "── Summary"
 echo "  ✅ Success: ${#SUCCESS[@]}"
 echo "  ❌ Failed:  ${#FAILED[@]}"
 

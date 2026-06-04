@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#===============================================================================
 # Filename: install.sh
 # Author: JirenYoung
 # Date: 2026
@@ -23,7 +22,6 @@
 #   sudo bash install.sh -p 2222                   # custom SSH port
 #   sudo bash install.sh -n                        # dry-run
 #   sudo bash install.sh -l /opt/logs              # custom log dir
-#===============================================================================
 
 set -euo pipefail
 
@@ -125,6 +123,8 @@ fi
 #===============================================================================
 # 1. Detect Linux distribution
 #===============================================================================
+echo ""
+echo "── [1/10] Detect Linux distribution"
 log_info "Detecting Linux distribution..."
 
 DISTRO=""            # "debian" or "rhel"
@@ -165,6 +165,8 @@ fi
 #===============================================================================
 # 2. System update
 #===============================================================================
+echo ""
+echo "── [2/10] Update system packages"
 log_info "Updating system packages..."
 
 if $DRY_RUN; then
@@ -181,6 +183,8 @@ fi
 #===============================================================================
 # 3. Install essential base packages
 #===============================================================================
+echo ""
+echo "── [3/10] Install base packages"
 log_info "Installing essential base packages..."
 
 if $DRY_RUN; then
@@ -213,6 +217,8 @@ fi
 #===============================================================================
 # 4. Timezone & clock synchronisation
 #===============================================================================
+echo ""
+echo "── [4/10] Configure timezone & clock sync"
 log_info "Configuring timezone ($TIMEZONE) and clock sync..."
 
 if $DRY_RUN; then
@@ -238,6 +244,8 @@ fi
 #===============================================================================
 # 5. Firewall configuration
 #===============================================================================
+echo ""
+echo "── [5/10] Configure firewall"
 log_info "Configuring firewall rules (SSH port: $SSH_PORT)..."
 
 if $DRY_RUN; then
@@ -293,6 +301,8 @@ fi
 #===============================================================================
 # 6. SSH hardening
 #===============================================================================
+echo ""
+echo "── [6/10] Harden SSH"
 log_info "Hardening SSH daemon..."
 
 SSHD_CONFIG="/etc/ssh/sshd_config"
@@ -375,6 +385,8 @@ fi
 #===============================================================================
 # 7. Fail2ban setup (brute-force protection)
 #===============================================================================
+echo ""
+echo "── [7/10] Setup fail2ban"
 log_info "Setting up fail2ban protection..."
 
 FAIL2BAN_JAIL="/etc/fail2ban/jail.local"
@@ -416,6 +428,8 @@ fi
 #===============================================================================
 # 8. Automatic security updates (unattended-upgrades / dnf-automatic)
 #===============================================================================
+echo ""
+echo "── [8/10] Enable automatic security updates"
 log_info "Enabling automatic security updates..."
 
 if $DRY_RUN; then
@@ -460,6 +474,8 @@ fi
 #===============================================================================
 # 9. Kernel parameter tuning (basic network & security optimisations)
 #===============================================================================
+echo ""
+echo "── [9/10] Tune kernel parameters"
 log_info "Applying kernel parameter tuning..."
 
 SYSCTL_FILE="/etc/sysctl.d/99-server-tuning.conf"
@@ -518,6 +534,8 @@ fi
 #===============================================================================
 # 10. SWAP check & basic recommendation
 #===============================================================================
+echo ""
+echo "── [10/10] Check SWAP"
 log_info "Checking SWAP configuration..."
 
 if $DRY_RUN; then
@@ -543,11 +561,7 @@ fi
 # 11. Summary
 #===============================================================================
 echo ""
-echo "#####################################################################"
-echo "#                                                                   #"
-echo "#               Server initialisation complete!                     #"
-echo "#                                                                   #"
-echo "#####################################################################"
+echo "── Server initialisation complete"
 echo ""
 echo "  Distribution       : $DISTRO"
 echo "  Package manager    : $PKG_MANAGER"
@@ -586,8 +600,6 @@ else
   echo "  📁 Execution log:     $LOG_FILE"
 fi
 
-echo ""
-echo "#####################################################################"
 echo ""
 
 log_info "=== $SCRIPT_NAME finished successfully ==="

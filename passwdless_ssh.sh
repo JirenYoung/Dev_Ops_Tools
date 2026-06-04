@@ -142,6 +142,8 @@ log_info "Current setting: PasswordAuthentication = ${CURRENT_PW_AUTH:-<not expl
 #===============================================================================
 # 3. Scan for SSH public keys — at least one must exist before we proceed
 #===============================================================================
+echo ""
+echo "── [1/6] Scan for SSH keys"
 log_info "Scanning for SSH authorized_keys across all users..."
 
 declare -a FOUND_KEYS=()
@@ -184,15 +186,13 @@ fi
 
 if [ ${#FOUND_KEYS[@]} -eq 0 ]; then
   echo ""
-  log_error "╔══════════════════════════════════════════════════════════════╗"
-  log_error "║  NO SSH PUBLIC KEYS FOUND ON THIS SYSTEM                    ║"
-  log_error "║                                                              ║"
-  log_error "║  If you disable password authentication now, you will be     ║"
-  log_error "║  LOCKED OUT of this server permanently.                      ║"
-  log_error "║                                                              ║"
-  log_error "║  Add your SSH key first:   bash add_ssh_key.sh               ║"
-  log_error "║  Then re-run this script.                                    ║"
-  log_error "╚══════════════════════════════════════════════════════════════╝"
+  log_error "NO SSH PUBLIC KEYS FOUND ON THIS SYSTEM"
+  log_error ""
+  log_error "If you disable password authentication now, you will be"
+  log_error "LOCKED OUT of this server permanently."
+  log_error ""
+  log_error "Add your SSH key first:   bash add_ssh_key.sh"
+  log_error "Then re-run this script."
   echo ""
   exit 1
 fi
@@ -219,9 +219,7 @@ fi
 # 5. Confirmation prompt
 #===============================================================================
 echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  ⚠️  DISABLE SSH PASSWORD AUTHENTICATION"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "── Disable SSH password authentication"
 echo ""
 echo "  After this change, ONLY key-based login will work."
 echo "  Password login will be REJECTED for all users."
@@ -234,8 +232,6 @@ done
 echo ""
 echo "  SSH port : $SSH_PORT"
 echo "  Config   : $SSHD_CONFIG"
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
 if $DRY_RUN; then
@@ -258,6 +254,8 @@ fi
 #===============================================================================
 SSHD_BACKUP="${SSHD_CONFIG}.bak.$(date +%Y%m%d_%H%M%S)"
 
+echo ""
+echo "── [2/6] Backup sshd_config"
 log_info "Backing up sshd_config → $SSHD_BACKUP"
 if ! cp "$SSHD_CONFIG" "$SSHD_BACKUP"; then
   log_error "Failed to create backup of $SSHD_CONFIG. Aborting."
@@ -275,6 +273,8 @@ log_info "Backup verified (identical to original)."
 #===============================================================================
 # 7. Modify sshd_config — disable password authentication
 #===============================================================================
+echo ""
+echo "── [3/6] Disable password authentication"
 log_info "Disabling PasswordAuthentication in $SSHD_CONFIG..."
 
 # Robust sed: handles commented lines, varying whitespace, tabs, mixed case
@@ -314,6 +314,8 @@ log_info "  Verified: PasswordAuthentication = no"
 #===============================================================================
 # 8. Validate SSH configuration syntax
 #===============================================================================
+echo ""
+echo "── [4/6] Validate SSH config syntax"
 log_info "Validating SSH configuration syntax (sshd -t)..."
 
 if $DRY_RUN; then
@@ -344,6 +346,8 @@ fi
 #===============================================================================
 # 9. Restart SSH daemon
 #===============================================================================
+echo ""
+echo "── [5/6] Restart SSH daemon"
 log_info "Restarting SSH daemon..."
 
 if $DRY_RUN; then
@@ -375,6 +379,8 @@ sleep 1
 #===============================================================================
 # 10. Verify SSH daemon is running and listening
 #===============================================================================
+echo ""
+echo "── [6/6] Verify SSH connectivity"
 log_info "Verifying SSH daemon is running..."
 
 if $DRY_RUN; then
@@ -451,9 +457,7 @@ fi
 # 12. Summary
 #===============================================================================
 echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  ✅ Password authentication DISABLED"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "── Password authentication disabled"
 echo ""
 echo "  Config file    : $SSHD_CONFIG"
 echo "  Backup file    : $SSHD_BACKUP"
